@@ -5,16 +5,16 @@ pub struct Circle {
 }
 
 impl Circle {
-    /// Constructs a new Circle with given radius
+    /// Constructs a new Circle with given position and radius
     ///
     /// # Panics
     /// Radius must be nonnegative
-    pub fn new(radius: f32) -> Circle {
+    pub fn new(x_pos: f32, y_pos: f32, radius: f32) -> Circle {
         assert!(radius >= 0.0);
 
         Circle {
-            x: 0.0,
-            y: 0.0,
+            x: x_pos,
+            y: y_pos,
             r: radius,
         }
     }
@@ -72,19 +72,19 @@ mod test {
 
     #[test]
     fn test_new_circle_allowed() {
-        Circle::new(10.0);
-        Circle::new(0.0);
+        Circle::new(0.0, 0.0, 10.0);
+        Circle::new(0.0, 0.0, 0.0);
     }
 
     #[test]
     #[should_panic(expected = "assertion failed: radius >= 0.0")]
     fn test_new_circle_panic() {
-        Circle::new(-1.0);
+        Circle::new(0.0, 0.0, -1.0);
     }
 
     #[test]
     fn test_circle_position() {
-        let mut circle = Circle::new(0.0);
+        let mut circle = Circle::new(0.0, 0.0, 0.0);
         assert_eq!(circle.get_position(), (0.0, 0.0));
         circle.set_position(10.0, -10.0);
         assert_eq!(circle.get_position(), (10.0, -10.0));
@@ -92,7 +92,7 @@ mod test {
 
     #[test]
     fn test_set_circle_radius_allowed() {
-        let mut circle = Circle::new(0.0);
+        let mut circle = Circle::new(0.0, 0.0, 0.0);
         assert_eq!(circle.get_radius(), 0.0);
         circle.set_radius(10.0);
         assert_eq!(circle.get_radius(), 10.0);
@@ -101,14 +101,14 @@ mod test {
     #[test]
     #[should_panic(expected = "assertion failed: radius >= 0.0")]
     fn test_set_circle_radius_panic() {
-        let mut circle = Circle::new(0.0);
+        let mut circle = Circle::new(0.0, 0.0, 0.0);
         circle.set_radius(-10.0);
     }
 
     #[test]
     fn test_check_circle_collision() {
-        let mut circle1 = Circle::new(10.0);
-        let mut circle2 = Circle::new(10.0);
+        let mut circle1 = Circle::new(0.0, 0.0, 10.0);
+        let mut circle2 = Circle::new(0.0, 0.0, 10.0);
         assert_eq!(circle1.check_collision(&circle2), true);
         assert_eq!(circle2.check_collision(&circle1), true);
         circle2.set_position(20.1, 0.0);
